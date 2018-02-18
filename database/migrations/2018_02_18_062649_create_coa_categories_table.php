@@ -4,9 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-use App\Contracts\User\UserRoleInterface;
-
-class CreateUsersTable extends Migration
+class CreateCoaCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,14 +13,13 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('coa_categories', function (Blueprint $table) {
             $table->increments('id');
-            // enumerated on chart account interface
-            $table->string('role')->default(UserRoleInterface::MASTER_USER);
+            $table->string('slug')->unique();
             $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->rememberToken();
+            // enumerated on chart account interface
+            $table->tinyInteger('coa_type');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -34,6 +31,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('coa_categories');
     }
 }
